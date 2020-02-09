@@ -7,7 +7,7 @@ Support: neovim 0.4.3 and Above
 
 
 ==============================================================================
-CONTENTS				*messages-qfs-contents*
+CONTENTS				*messages-qf-contents*
 
 INTRODUCTION			|messages-qf-introduction|
 FUNCTION			|messages-qf-function|
