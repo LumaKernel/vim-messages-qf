@@ -12,6 +12,8 @@ command! MessagesQF call g:messages_qf#messages() | copen
 
 ![image](https://user-images.githubusercontent.com/29811106/74102263-3e872800-4b85-11ea-8e96-9c9dc54ef97b.png)
 
+Rightside is the result transformed by this plugin.
+
 # License
 
 [The Unlicense](https://unlicense.org)
