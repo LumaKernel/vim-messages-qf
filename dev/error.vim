@@ -3,28 +3,28 @@ mes clear
 
 :w
 
-one
+_one
 
 function! Fn_A()
-  two
+  _two
 endfunction
-call Hoge()
+call Fn_A()
 
 function! s:fn_b()
-  three
+  _three
 endfunction
-call s:fuga()
+call s:fn_b()
 
 function! s:fn_c()
-  five
-  call s:fuga()
+  _five
+  call s:fn_b()
 endfunction
-call s:piyo()
+call s:fn_c()
 
 
 let s:dict = {}
 function! s:dict.fn_d()
-  four
+  _four
 endfunction
 call s:dict.fn_d()
 
