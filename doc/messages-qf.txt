@@ -17,7 +17,7 @@ FUNCTION			|messages-qf-function|
 INTRODUCTION				*messages-qf-introduction*
 
 >
-  command! MessageQF call g:messages_qf#message() | copen
+  command! MessagesQF call g:messages_qf#messages() | copen
 <
 
 GitHub : https://github.com/LumaKernel/vim-messages-qf
@@ -26,8 +26,8 @@ GitHub : https://github.com/LumaKernel/vim-messages-qf
 =============================================================================
 FUNCTION 				*messages-qf-function*
 
-					*messages_qf#message()*
-messages_qf#message()
+					*messages_qf#messages()*
+messages_qf#messages()
 	|setqflist()| the messages. You should |:copen| by yousrself.
 
 					*messages_qf#setqfmes()*
@@ -35,9 +35,9 @@ messages_qf#setqfmes({messages})
 	{messages} is stirng. Behaves like |messages_qf#messages()| except as
 	the messages are {messages}.
 
-					*messages_qf#parse_message()*
-messages_qf#parse_message({message-list})
-	{message-list} is list of string. It transforms lines of strings to
+					*messages_qf#parse_messages()*
+messages_qf#parse_messages({messages-list})
+	{messages-list} is list of string. It transforms lines of strings to
 	lines that can be used to |setqflist()|.
 
 ==============================================================================

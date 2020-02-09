@@ -41,6 +41,6 @@ let s:dict.fn_f = function('s:fn_f')
 
 call s:dict.fn_f()
 
-call message_qf#setqfmes(execute('message', 'silent!'))
+call messages_qf#messages()
 copen
 
