@@ -17,7 +17,7 @@ Rightside is the result transformed by this plugin. Line numbers are chaned to a
 
 # Recipe for Dumping
 
-This is useful to debug your vim plugin. This keeps absolute.
+This is useful to debug your vim plugin. This keeps absolute path in messages.
 
 ```vim
 command! SaveMes call writefile([json_encode(g:messages_qf#parse_messages(split(execute('messages','silent!'),"\n")))],expand('~/.cache/vim.messages.json'))
