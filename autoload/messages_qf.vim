@@ -113,5 +113,3 @@ function! s:funcstr_to_qfline(funcstr, suffix) abort
         \ }
 endfunction
 
-writefile([json_encode(g:messages_qf#parse_messages(split(execute('messages','silent!'),"\n")))],expand('~/.cache/vim.messages.json'))
-
