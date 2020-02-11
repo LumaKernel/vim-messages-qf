@@ -95,7 +95,7 @@ function! s:funcstr_to_qfline(funcstr, suffix) abort
     redir => verb
       silent! call execute(printf('verbose function %s', func), '')
     redir END
-    let def = split(verb, "\n")[1]
+    let def = get(split(verb, "\n"), 1, '')
     let pat_def = '\C^\tLast set from \(.*\) line \(\d\+\)$'
     if def =~# pat_def
       let groups = matchlist(def, pat_def)
