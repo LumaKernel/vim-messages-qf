@@ -5,7 +5,7 @@ English is only supported.
 Define by yourself.
 
 ```vim
-command! MessagesQF call g:messages_qf#messages() | copen
+command! -bar MessagesQF call g:messages_qf#messages() | copen
 ```
 
 # Screenshots
