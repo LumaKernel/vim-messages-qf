@@ -1,7 +1,7 @@
 *messages-qf.txt*		Yet Another Alternative for |:messages|
 
 Author : Luma <tomorinao.info@gmail.com>
-License: The Unlicense <https://unlicense.org>
+License: Unlicense <https://unlicense.org>
 Support: Vim 8.1 and Above
 Support: neovim 0.4.3 and Above
 
@@ -10,21 +10,21 @@ Support: neovim 0.4.3 and Above
 CONTENTS				*messages-qf-contents*
 
 INTRODUCTION			|messages-qf-introduction|
-FUNCTION			|messages-qf-function|
+FUNCTIONS			|messages-qf-functions|
 
 
 ==============================================================================
 INTRODUCTION				*messages-qf-introduction*
 
 >
-  command! MessagesQF call g:messages_qf#messages() | copen
+  command! -bar MessagesQF call g:messages_qf#messages() | copen
 <
 
 Recipes for dumping.
 
 >
-command! SaveMes call message_qf#util#dump('~/.cache/vim.messages.json')
-command! LoadMes call setqflist('~/.cache/vim.messages.json') | copen
+  command! -bar SaveMes call message_qf#util#dump('~/.cache/vim.messages.json')
+  command! -bar LoadMes call setqflist(message_qf#util#load('~/.cache/vim.messages.json')) | copen
 <
 
 
@@ -53,8 +53,8 @@ messages_qf#util#dump({filename})
 
 					*messages_qf#util#load()*
 messages_qf#util#load({filename})
-	Load the message from {filename} by |readfile()|.
-	Returns the decoded json.
+	Load the message from {filename} by |readfile()|.  Returns the decoded
+	json.
 
 ==============================================================================
 vim:tw=78:ts=8:noet:ft=help:norl

@@ -20,12 +20,12 @@ Rightside is the result transformed by this plugin. Line numbers are chaned to a
 This is useful to debug your vim plugin. This keeps absolute path in messages.
 
 ```vim
-command! SaveMes call message_qf#util#dump('~/.cache/vim.messages.json')
-command! LoadMes call setqflist(message_qf#util#load('~/.cache/vim.messages.json')) | copen
+command! -bar SaveMes call message_qf#util#dump('~/.cache/vim.messages.json')
+command! -bar LoadMes call setqflist(message_qf#util#load('~/.cache/vim.messages.json')) | copen
 ```
 
 # License
 
-[The Unlicense](https://unlicense.org)
+[Unlicense](https://unlicense.org)
 
 
