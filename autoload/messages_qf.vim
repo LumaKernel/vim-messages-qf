@@ -12,6 +12,18 @@ function! messages_qf#setqfmes(messages) abort
   call setqflist(qflist, 'r')
 endfunction
 
+function! s:apply_rel_lnum(last, rel_lnum, next_line) abort
+  let qfline = copy(a:last)
+  if has_key(qfline, 'lnum')
+    let qfline.lnum += a:rel_lnum
+  endif
+  if a:next_line isnot 0
+    let qfline.text = a:next_line
+  endif
+  return qfline
+endfunction
+
+
 function! messages_qf#parse_messages(list) abort
   let res = []
   let last = 0
@@ -24,17 +36,11 @@ function! messages_qf#parse_messages(list) abort
       let pat_lnum = '\C^line \+\(\d\+\):$'
 
       if line =~# pat_lnum && idx + 1 < len
-        let qfline = copy(last)
         let group_lnum = matchlist(line, pat_lnum)
 
         let rel_lnum = str2nr(group_lnum[1])
 
-        if has_key(qfline, 'lnum')
-          let qfline.lnum += rel_lnum
-        endif
-        let qfline.text = a:list[idx + 1]
-
-        call add(res, qfline)
+        call add(res, s:apply_rel_lnum(last, rel_lnum, get(a:list, idx + 1)))
         let idx += 1
         continue
       endif
@@ -42,11 +48,25 @@ function! messages_qf#parse_messages(list) abort
       let last = 0
     endif
 
+    let pat_func_line = '\C^\(.*\), line \(\d\+\)$'
     let pat_func = '\C^\(Error detected while processing function\) \(.*\):$'
     let pat_file = '\C^\(Error detected while processing\) \(.*\):$'
     let pat_op = '\C^"\(.*\)" \(\d\+\)L, \(\d\+\)C \(.*\)$'
 
-    if line =~# pat_func
+    if line =~# pat_func_line
+      let groups = matchlist(line, pat_func_line)
+      let funcs_str = groups[1]
+      let rel_lnum = str2nr(groups[2])
+      let func_strs = split(funcs_str, '\.\.')
+      call add(res, { 'text' : 'Error detected while processing function' } )
+      for func_str in func_strs[: -2]
+        call add(res, s:funcstr_to_qfline(func_str, '..'))
+      endfor
+      let last = s:funcstr_to_qfline(func_strs[-1], ':')
+      call add(res, last)
+      call add(res, s:apply_rel_lnum(last, rel_lnum, get(a:list, idx + 1)))
+      let idx += 1
+    elseif line =~# pat_func
       let groups = matchlist(line, pat_func)
       let start = groups[1]
       let funcs_str = groups[2]
@@ -91,22 +111,18 @@ function! s:funcstr_to_qfline(funcstr, suffix) abort
   let func = funcstr
   if func =~# '^\d\+$' | let func = printf('{%s}', func) | endif
 
-  if exists(printf('*%s', func))
-    redir => verb
-      silent! call execute(printf('verbose function %s', func), '')
-    redir END
-    let def = get(split(verb, "\n"), 1, '')
-    let pat_def = '\C^\tLast set from \(.*\) line \(\d\+\)$'
-    if def =~# pat_def
-      let groups = matchlist(def, pat_def)
-      let filename = expand(groups[1])
-      let lnum = str2nr(groups[2])
-      return {
-            \   'filename': filename,
-            \   'lnum': lnum + funcline,
-            \   'text': funcstr . a:suffix,
-            \ }
-    endif
+  let verb = execute(printf('verbose function %s', func), 'silent!')
+  let def = get(split(verb, "\n"), 1, '')
+  let pat_def = '\C^\tLast set from \(.*\) line \(\d\+\)$'
+  if def =~# pat_def
+    let groups = matchlist(def, pat_def)
+    let filename = expand(groups[1])
+    let lnum = str2nr(groups[2])
+    return {
+          \   'filename': filename,
+          \   'lnum': lnum + funcline,
+          \   'text': funcstr . a:suffix,
+          \ }
   endif
   return {
         \   'text': '<Declaration not found> ' . funcstr . a:suffix,
